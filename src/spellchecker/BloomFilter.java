@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* By Fauzan Hilmi Ramadhian 13512003 */
 package spellchecker;
 
 import java.io.ByteArrayInputStream;
@@ -11,21 +7,15 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.zip.CRC32;
 import net.jpountz.xxhash.StreamingXXHash32;
 import net.jpountz.xxhash.XXHashFactory;
-import org.getopt.util.hash.FNV1;
 
 public class BloomFilter {
     private byte[] set;
-    private int setsize = 525180;
+    private int setsize = 208991; //from Bloom Filter formula
     private String hash;
-    
-//    public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
-//        BloomFilter bf = new BloomFilter();
-//        System.out.println(bf.XXHash("hah"));
-//    }
+   
     
     public BloomFilter() {
         
@@ -121,6 +111,7 @@ public class BloomFilter {
         set = new byte[1+setsize];
     }
     
+    //MD5 from MessageDigest Library
     public int MD5(String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         byte[] bytesOfMessage = s.getBytes("UTF-8");
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -131,6 +122,7 @@ public class BloomFilter {
         return (num%setsize);
     }
     
+    //SHA1 from MessageDigest Library
     public int SHA1(String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         byte[] bytesOfMessage = s.getBytes("UTF-8");
         MessageDigest md = MessageDigest.getInstance("SHA1");
@@ -141,6 +133,7 @@ public class BloomFilter {
         return (num%setsize);
     }
     
+    //CRC32 from CRC32 Library
     public int CRC(String s) throws UnsupportedEncodingException {
         byte[] bytesOfMessage = s.getBytes("UTF-8");
         CRC32 crc = new CRC32();
@@ -150,24 +143,28 @@ public class BloomFilter {
         return (num%setsize);
     }
     
+    //Java hashCode from String Library
     public int hashCode(String s) {
         int num = s.hashCode();
         if(num<1) num *= -1;
         return (num%setsize);
     }
     
+    //FNV from http://www.isthe.com/chongo/tech/comp/fnv/index.html
     public int FNV(String s) {
         int num = FNVHash.hash32(s);
         if(num<1) num *= -1;
         return (num%setsize);
     }
     
+    //MurmurHash from https://github.com/indeedeng/util/blob/master/util-core/src/main/java/com/indeed/util/core/hash/MurmurHash.java
     public int Murmur(String s) {
         int num = MurmurHash.hash32(s);
         if(num<1) num *= -1;
         return (num%setsize);
     }
     
+    //Jenkins Hash (lookup3) from http://www.java2s.com/Code/Java/Development-Class/JenkinsHash.htm
     public int Jenkins(String s) throws UnsupportedEncodingException {
         byte[] bytesOfMessage = s.getBytes("UTF-8");
         int num = JenkinsHash.hash32(bytesOfMessage,0);
@@ -175,6 +172,7 @@ public class BloomFilter {
         return (num%setsize);
     }
     
+    //XXHash from https://github.com/Cyan4973/xxHash/releases/tag/r39
     public int XXHash(String s) throws UnsupportedEncodingException, IOException {
         byte[] bytesOfMessage = s.getBytes("UTF-8");
         XXHashFactory factory = XXHashFactory.fastestInstance();

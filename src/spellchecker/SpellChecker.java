@@ -25,6 +25,14 @@ public class SpellChecker {
     public static String filename = "dictionary.txt";
     public static ArrayList<String> dict;
     
+    public static boolean isThere (String s) {
+//        for(String ss : dict) {
+//            if (ss.equalsIgnoreCase(s)) {
+//                return true;
+//            }
+//        }
+        return false;
+    }
     public static void main(String[] args) throws IOException, UnsupportedEncodingException, NoSuchAlgorithmException {
         dict = new ArrayList<>();
         Scanner fileScanner = new Scanner(new File(filename));
@@ -115,33 +123,34 @@ public class SpellChecker {
         
         int count = 0;
         boolean res = true;
+        int it = 0;
         for(String s: dict) {
             //
             String depan = 'a' + s;
-            //System.out.println(depan);
+            boolean ada = isThere(depan);
             res = bMD5.check(depan);
-            if(res) fpMD5++;
+            if(res && !ada) fpMD5++;
             
             res = bSHA1.check(depan);
-            if(res) fpSHA1++;
+            if(res && !ada) fpSHA1++;
             
             res = bCRC.check(depan);
-            if(res) fpCRC++;
+            if(res && !ada) fpCRC++;
             
             res = bhashCode.check(depan);
-            if(res) fphashCode++;
+            if(res && !ada) fphashCode++;
             
             res = bFNV.check(depan);
-            if(res) fpFNV++;
+            if(res && !ada) fpFNV++;
             
             res = bMurmur.check(depan);
-            if(res) fpMurmur++;
+            if(res && !ada) fpMurmur++;
             
             res = bJenkins.check(depan);
-            if(res) fpJenkins++;
+            if(res && !ada) fpJenkins++;
             
             res = bXXHash.check(depan);
-            if(res) fpXXHash++;
+            if(res && !ada) fpXXHash++;
             
             count++;
             //
@@ -150,28 +159,29 @@ public class SpellChecker {
             depan = s + 'a';
             //System.out.println(depan);
             res = bMD5.check(depan);
-            if(res) fpMD5++;
+            ada = isThere(depan);
+            if(res && !ada) fpMD5++;
             
             res = bSHA1.check(depan);
-            if(res) fpSHA1++;
+            if(res && !ada) fpSHA1++;
             
             res = bCRC.check(depan);
-            if(res) fpCRC++;
+            if(res && !ada) fpCRC++;
             
             res = bhashCode.check(depan);
-            if(res) fphashCode++;
+            if(res && !ada) fphashCode++;
             
             res = bFNV.check(depan);
-            if(res) fpFNV++;
+            if(res && !ada) fpFNV++;
             
             res = bMurmur.check(depan);
-            if(res) fpMurmur++;
+            if(res && !ada) fpMurmur++;
             
             res = bJenkins.check(depan);
-            if(res) fpJenkins++;
+            if(res && !ada) fpJenkins++;
             
             res = bXXHash.check(depan);
-            if(res) fpXXHash++;
+            if(res && !ada) fpXXHash++;
             
             count++;
             //
@@ -181,36 +191,38 @@ public class SpellChecker {
                     StringBuilder sb = new StringBuilder(s);
                     sb.deleteCharAt(i);
                     depan = sb.toString();
+                    ada = isThere(depan);
                     //System.out.println(depan);
                     res = bMD5.check(depan);
-                    if(res) fpMD5++;
+                    if(res && !ada) fpMD5++;
             
                     res = bSHA1.check(depan);
-                    if(res) fpSHA1++;
+                    if(res && !ada) fpSHA1++;
 
                     res = bCRC.check(depan);
-                    if(res) fpCRC++;
+                    if(res && !ada) fpCRC++;
 
                     res = bhashCode.check(depan);
-                    if(res) fphashCode++;
+                    if(res && !ada) fphashCode++;
 
                     res = bFNV.check(depan);
-                    if(res) fpFNV++;
+                    if(res && !ada) fpFNV++;
 
                     res = bMurmur.check(depan);
-                    if(res) fpMurmur++;
+                    if(res && !ada) fpMurmur++;
 
                     res = bJenkins.check(depan);
-                    if(res) fpJenkins++;
+                    if(res && !ada) fpJenkins++;
 
                     res = bXXHash.check(depan);
-                    if(res) fpXXHash++;
+                    if(res && !ada) fpXXHash++;
 
                     count++;
                 }
             }
             
-            //System.out.println("");
+           it++;
+           System.out.println(it);
         }
         
         
@@ -222,7 +234,7 @@ public class SpellChecker {
         System.out.println(fpMurmur/count);
         System.out.println(fpJenkins/count);
         System.out.println(fpXXHash/count);
-//        System.out.println(count);
+        System.out.println(count);
 //        System.out.println(fpSHA1);
 //        System.out.println(fpCRC);
 //        System.out.println(fphashCode);
